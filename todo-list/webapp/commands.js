@@ -2,6 +2,7 @@
 // Возможно в данный момент кажется избыточно, но это дает нам задел на масштабируемость.
 
 import { TodoList, TodoItem } from "./classes.js";
+import { TodoHistory } from "./memento.js";
 
 export class Command {
   name;
@@ -36,6 +37,11 @@ export const CommandExecutor = {
         const [itemToDelete] = command.args;
         todoList.delete(itemToDelete);
         break;
+      case Commands.UNDO:
+        const previousList = TodoHistory.pop();
+        if (previousList) {
+          todoList.replaceList(previousList);
+        }
     }
   },
 };
