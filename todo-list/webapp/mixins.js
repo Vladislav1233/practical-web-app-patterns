@@ -3,7 +3,7 @@
 // В моем слуае мне нужен обзервер, который будет отслеживать изменения в списке задач.
 // По сути я создам поведение (наблюдателя), которое смогу использовать в любом другом месте.
 
-const observerMixin = {
+export const observerMixin = {
   observers: new Set(),
   addObserver(observer) {
     this.observers.add(observer);
