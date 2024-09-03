@@ -38,6 +38,29 @@ class TodoList {
       throw new Error("Use TodoList.getInstance() to access the list");
     }
   }
+
+  add(todoItem) {
+    const array = Array.from(this.#data);
+    const todoExists = array.filter((t) => t.equals(todoItem)).length > 0;
+    if (!todoExists) {
+      this.#data.add(todoItem);
+      this.notify();
+    }
+  }
+  delete(todo) {
+    const array = Array.from(this.#data);
+    const todoToDelete = array.filter((t) => t.text == todo);
+    this.#data.delete(todoToDelete[0]);
+    this.notify();
+  }
+  find(text) {
+    const array = Array.from(this.#data);
+    return array.find((i) => i.text == text);
+  }
+  replaceList(list) {
+    this.#data = list;
+    this.notify();
+  }
 }
 
 // Применяем миксин к экземпляру TodoList
