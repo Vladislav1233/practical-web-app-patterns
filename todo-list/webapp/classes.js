@@ -1,6 +1,6 @@
 import { observerMixin } from "./mixins.js";
 
-class TodoItem {
+export class TodoItem {
   constructor(text) {
     this.text = text;
   }
@@ -13,7 +13,7 @@ class TodoItem {
 // Я хочу чтобы у меня был только один экземпляр списка задач.
 // Соответственно TodoList - кандидиат для Singleton паттерна.
 // Но в таком варианте кода существует проблема, что экземпляров я могу создать сколько угодно.
-class TodoList {
+export class TodoList {
   #data = new Set();
   get items() {
     return this.#data;

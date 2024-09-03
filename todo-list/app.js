@@ -1,8 +1,26 @@
 // Здесь создаю глобальные переменные. Применяю паттерн globalThis.
 // Так как я использую модульность,
+
+import { TodoList } from "./webapp/classes.js";
+import { Command, CommandExecutor, Commands } from "./webapp/commands.js";
+
 // то я не могу создать переменную в глобальном окружении, которая была бы видна во всем приложении.
 globalThis.DOM = {};
 const DOM = globalThis.DOM;
+
+function renderList() {
+  DOM.todoList.innerHTML = "";
+  const list = TodoList.getInstance();
+  for (let todo of list.items) {
+    const li = document.createElement("li");
+    li.classList.add("todo-item");
+    li.innerHTML = `
+      ${todo.text} <button class="delete-btn">X</button>
+    `;
+    li.dataset.text = todo.text;
+    DOM.todoList.appendChild(li);
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   // Здесь выношу ссылки на элементы DOM, с которыми буду работать во всем приложении.
@@ -11,14 +29,19 @@ document.addEventListener("DOMContentLoaded", () => {
   DOM.todoInput = document.getElementById("todo-input");
 
   DOM.addBtn.addEventListener("click", (event) => {
-    // TODO
+    const cmd = new Command(Commands.ADD);
+    CommandExecutor.execute(cmd);
   });
 
   // Здесь я буду проверять клик на кнопку удаления через
   // клик на список, чтобы не вытаскивать из DOM все кнопки и не вешать много слушателей события.
-  DOM.todoInput.addEventListener("click", (event) => {
+  DOM.todoList.addEventListener("click", (event) => {
     if (event.target.classList.contains("delete-btn")) {
-      // TODO
+      const todo = event.target.parentNode.dataset.text;
+      const cmd = new Command(Commands.DELETE, [todo]);
+      CommandExecutor.execute(cmd);
     }
   });
+
+  TodoList.getInstance().addObserver(renderList);
 });

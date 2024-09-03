@@ -12,6 +12,6 @@ export const observerMixin = {
     this.observers.delete(observer);
   },
   notify() {
-    this.observers.forEach((observer) => observer.update());
+    this.observers.forEach((observer) => observer());
   },
 };
