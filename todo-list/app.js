@@ -1,9 +1,9 @@
-// Здесь создаю глобальные переменные. Применяю паттерн globalThis.
-// Так как я использую модульность,
-
 import { TodoList } from "./webapp/classes.js";
 import { Command, CommandExecutor, Commands } from "./webapp/commands.js";
+import { LocalStorage } from "./webapp/storage.js";
 
+// Здесь создаю глобальные переменные. Применяю паттерн globalThis.
+// Так как я использую модульность,
 // то я не могу создать переменную в глобальном окружении, которая была бы видна во всем приложении.
 globalThis.DOM = {};
 const DOM = globalThis.DOM;
@@ -42,6 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
       CommandExecutor.execute(cmd);
     }
   });
+});
 
+document.addEventListener("DOMContentLoaded", () => {
   TodoList.getInstance().addObserver(renderList);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  LocalStorage.load();
 });
